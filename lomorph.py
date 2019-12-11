@@ -4,7 +4,7 @@
 # Based on Judith Croston's original code, modified and expanded by Beatriz Mingo.
 # Please see Mingo et al. 2019 for details and credits.
 
-# Version 1.5 - pre-tidy-up release for github
+# Version 1.5 - release for github.
 
 ####################
 #TO DO / WISHLIST###
@@ -16,9 +16,11 @@
 
 #Increase aperture angle for cases where angle of dist2 and distmax2 is very different?
 
-#Replace astropy with pyephem when using coordinate calculations, to speed things up?
+#Replace astropy with pyephem (or suitable alternative) when using coordinate calculations, to speed things up
 
-#Tidy up, make ready for github?
+#Tidy up, optimise, improve... 
+
+#Translate to Python 3
 
 
 ####################
@@ -318,7 +320,6 @@ for line in sources:
         #Load the components table and skip the first line; get the values out
         components=open(compfile,'r')
         components.readline()
-#        components.readline()
         for line2 in components:
             line2=line2.strip()
             column2=line2.split(',')
@@ -384,7 +385,6 @@ for line in sources:
         rxpix=xra+int(dx)-(xmin)
         rypix=yra+int(dy)-(ymin)
 
-        #NOTE: changed from xmin-1, ymin-1 in Feb 2018, as the offset seemed wrong now!
 
         #First we mask out unrelated components, if necessary - this must be done before the flood filling, in case of partial overlap
         if excludeComp==1:
@@ -614,7 +614,6 @@ for line in sources:
 
 ###########################
 #Option to pre-classify core-bright FRI
-#            if (dist1<max(4.0,(halfdist/3.0))):   #Includes beam size, to avoid issues with resolution
             if (dist1<3.0):
                 #Path for core-bright FRIs
                 if distmax>=8.0:
@@ -716,7 +715,6 @@ for line in sources:
 
 #Array b: turning values to zero in the cone along the line between the optical core and the 1st peak, plus/minus given angle, for second peak search.
 #Array c: zeroing everything outside the wedge, to make sure distmax 1 is in the right place.
-#Is this more efficient than including the angle conditions within the loop for 2nd peak? TO CHECK!!!
                 
                 for xvalb in range(sizex-2):
                     for yvalb in range(sizey-2):
@@ -812,8 +810,7 @@ for line in sources:
                                         distmax2_x=xd
                                         distmax2_y=yd
 
-                #Fixing bug I don't understand which causes distmax2 to be 0 in some cases where it shouldn't:
-                #TO CHECK - is this causing the issue with somea few core-bright FRI where distmax2 is in the same wedge as distmax?
+                #Fixing bug which causes distmax2 to be 0 in some cases where it shouldn't:
                 if (distmax2==0.0 and distmax2Prelim>0.0):
                     distmax2=distmax2Prelim
                     distmax2_x=distmax2_xPrelim
@@ -849,7 +846,7 @@ for line in sources:
                     angleDiff=abs(angleDiff-360.0)
                 
                 #Classification
-                #Classes: 0=faint, 1=FRI, 2=FRII, 3=FRI-II hybrid, 4=FRII-I hybrid, 5=unresolved, 6=small FRI, 7=small FRII, 8=small hybrid
+                #Classes: 0=faint, 1=FRI, 2=FRII, 3=FRI-II hybrid, 4=FRII-I hybrid, 5=unresolved, 6=small FRI, 7=small FRII, 8=small hybrid (encompasses both I-II and II-I)
                 if (rclass!=5) and ((dist1+dist2<20.0 and siz<40.0) or (siz<27.0)):
                     if rclass==1:
                         fr1-=1
