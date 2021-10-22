@@ -1,3 +1,6 @@
+#Code to generate cutouts from the LOFAR mosaics.
+#Written by Dr Judith Croston, used with permission.
+
 import numpy as np
 import sys
 import os
