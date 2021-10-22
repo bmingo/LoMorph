@@ -1,0 +1,11 @@
+#########################
+#Summary of main changes#
+#########################
+
+
+### v 1.6 ###
+
+*Moved the masking procedures from main code to flood-filling function.
+*Changed masking order (first mask IN source components then mask OUT unassociated components) before flood-filling, to optimise for denser fields.
+*Improvements to the single- and multi-component source workflow by coalescing the loops for both types of source.
+*Improvements to the masking of non-associated components by introducing a source size-dependent search radius (with minimum threshold).
